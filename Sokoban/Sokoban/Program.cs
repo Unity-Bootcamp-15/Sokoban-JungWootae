@@ -1,0 +1,10 @@
+﻿namespace Sokoban
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("testing Commit");
+        }
+    }
+}
