@@ -3,35 +3,62 @@
         static void Main(string[] args) {
             int playerX = 3;
             int playerY = 3;
+            int maxScore = 0;
+            int curScore = 0;
+            bool isClear = false;
 
             ConsoleKeyInfo keyInfo;
-            int[,] mapData = new int[,]{       
-                // 0 : blank, 1 : wall, 2 : player, 3 : box, 4 : goal
+            int[,] mapData = new int[,]{
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
                 { 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-                { 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 3, 0, 1},
-                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+                { 1, 0, 0, 1, 1, 1, 0, 0, 0, 3, 0, 0, 1, 0, 3, 0, 1},
+                { 1, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1, 0, 0, 0, 1},
                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 1, 0, 0, 0, 1},
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
             };
 
             GameStart();
+
             while (true) {
+                isClear = (curScore == maxScore);
+                if (isClear) {
+                    GameClear();
+                }
+
                 keyInfo = Console.ReadKey(true);
                 PlayerReset();
                 PlayerMove();
+                
+            }
+
+            void GameClear() {
+                Console.Clear();
+                Console.WriteLine("""
+
+                    === You Clear Game!!! ===
+
+                    """);
+                Console.WriteLine("Press ESC to Exit.");
+                keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key == ConsoleKey.Escape) {
+                    Environment.Exit(0);
+                }
             }
 
             void GameStart() {
+                foreach (int map in mapData) {
+                    if (map == 3)
+                        maxScore++;
+                }
                 Console.Clear();
                 CreateMap();
                 Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.CursorVisible = false;
                 Console.Title = "(   {=+=[=Sokoban=]=+=}   )";
-                Console.SetCursorPosition(3, 3);
+                Console.SetCursorPosition(playerX, playerY);
                 Console.Write("◈");
             }
 
@@ -48,31 +75,89 @@
                 int playerLeft = mapData[playerY, playerX - 1];
                 int playerRight = mapData[playerY, playerX + 1];
 
-
-
                 switch (keyInfo.Key) {
                     case ConsoleKey.UpArrow:
-                        if (playerUp != wall)
-                        if (playerY > 0)
-                            moveY = playerY - 1;
+                        if (playerUp == box) {
+                            if ((mapData[playerY - 2, playerX] == 0 || mapData[playerY - 2, playerX] == goal) && playerY > 1) {
+                                if (mapData[playerY - 2, playerX] == goal) {
+                                    mapData[playerY - 2, playerX] = goal;
+                                    curScore++;
+                                }
+                                else {
+                                    mapData[playerY - 2, playerX] = box;
+                                }
+                                mapData[playerY - 1, playerX] = 0;
+                                moveY = playerY - 1;
+                                RedrawMap();
+                            }
+                        }
+                        else if (playerUp != wall) {
+                            if (playerY > 0)
+                                moveY = playerY - 1;
+                        }
                         break;
 
                     case ConsoleKey.DownArrow:
-                        if (playerDown != wall)
-                        if (playerY < Console.BufferHeight - 1)
-                            moveY = playerY + 1;
+                        if (playerDown == box) {
+                            if ((mapData[playerY + 2, playerX] == 0 || mapData[playerY + 2, playerX] == goal) && playerY < mapData.GetLength(0) - 2) {
+                                if (mapData[playerY + 2, playerX] == goal) {
+                                    mapData[playerY + 2, playerX] = goal;
+                                    curScore++;
+                                }
+                                else {
+                                    mapData[playerY + 2, playerX] = box;
+                                }
+                                mapData[playerY + 1, playerX] = 0;
+                                moveY = playerY + 1;
+                                RedrawMap();
+                            }
+                        }
+                        else if (playerDown != wall) {
+                            if (playerY < mapData.GetLength(0) - 1)
+                                moveY = playerY + 1;
+                        }
                         break;
 
                     case ConsoleKey.LeftArrow:
-                        if (playerLeft != wall)
-                        if (playerX > 0)
-                            moveX = playerX - 1;
+                        if (playerLeft == box) {
+                            if ((mapData[playerY, playerX - 2] == 0 || mapData[playerY, playerX - 2] == goal) && playerX > 1) {
+                                if (mapData[playerY, playerX - 2] == goal) {
+                                    mapData[playerY, playerX - 2] = goal;
+                                    curScore++;
+                                }
+                                else {
+                                    mapData[playerY, playerX - 2] = box;
+                                }
+                                mapData[playerY, playerX - 1] = 0;
+                                moveX = playerX - 1;
+                                RedrawMap();
+                            }
+                        }
+                        else if (playerLeft != wall) {
+                            if (playerX > 0)
+                                moveX = playerX - 1;
+                        }
                         break;
 
                     case ConsoleKey.RightArrow:
-                        if (playerRight != wall)
-                        if (playerX < Console.BufferWidth - 1)
-                            moveX = playerX + 1;
+                        if (playerRight == box) {
+                            if ((mapData[playerY, playerX + 2] == 0 || mapData[playerY, playerX + 2] == goal) && playerX < mapData.GetLength(1) - 2) {
+                                if (mapData[playerY, playerX + 2] == goal) {
+                                    mapData[playerY, playerX + 2] = goal;
+                                    curScore++;
+                                }
+                                else {
+                                    mapData[playerY, playerX + 2] = box;
+                                }
+                                mapData[playerY, playerX + 1] = 0;
+                                moveX = playerX + 1;
+                                RedrawMap();
+                            }
+                        }
+                        else if (playerRight != wall) {
+                            if (playerX < mapData.GetLength(1) - 1)
+                                moveX = playerX + 1;
+                        }
                         break;
 
                     case ConsoleKey.Escape:
@@ -85,6 +170,7 @@
                     playerX = moveX;
                     playerY = moveY;
                     Console.SetCursorPosition(playerX, playerY);
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write("◈");
                 }
             }
@@ -94,40 +180,40 @@
                     return;
                 GameStart();
             }
-            
+
             void CreateMap() {
-                // 0 : blank, 1 : wall, 2 : player, 3 : box, 4 : goal
                 for (int i = 0; i < mapData.GetLength(0); i++) {
                     for (int j = 0; j < mapData.GetLength(1); j++) {
                         switch (mapData[i, j]) {
                             case 0:
                                 Console.Write(" ");
                                 break;
-
                             case 1:
                                 Console.ForegroundColor = ConsoleColor.White;
                                 Console.Write("■");
                                 break;
-
                             case 2:
                                 Console.ForegroundColor = ConsoleColor.Magenta;
                                 Console.Write("◈");
                                 break;
-
                             case 3:
                                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                                 Console.Write("□");
                                 break;
-
                             case 4:
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.Write("※");
                                 break;
-
                         }
                     }
                     Console.WriteLine();
                 }
+                Console.WriteLine($"Your Goal : {curScore} / {maxScore}");
+            }
+
+            void RedrawMap() {
+                Console.SetCursorPosition(0, 0);
+                CreateMap();
             }
         }
     }
