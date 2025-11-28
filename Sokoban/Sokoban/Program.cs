@@ -1,8 +1,6 @@
-﻿namespace Sokoban
-{
-    internal class Program{
-
-        static void Main(string[] args){
+﻿namespace Sokoban {
+    internal class Program {
+        static void Main(string[] args) {
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.CursorVisible = false;
 
@@ -14,14 +12,11 @@
 
             while (true) {
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-
-                int curPosX = Console.GetCursorPosition().Left;
-                int curPosY = Console.GetCursorPosition().Top;
-
                 int moveX = playerX;
                 int moveY = playerY;
 
-                switch (keyInfo.Key) {
+                switch (keyInfo.Key)
+                {
                     case ConsoleKey.UpArrow:
                         if (playerY > 0)
                             moveY = playerY - 1;
@@ -30,7 +25,6 @@
                         if (playerY < Console.BufferHeight - 1)
                             moveY = playerY + 1;
                         break;
-
                     case ConsoleKey.LeftArrow:
                         if (playerX > 0)
                             moveX = playerX - 1;
@@ -43,14 +37,17 @@
                     case ConsoleKey.Escape:
                         return;
                 }
-                Console.SetCursorPosition(playerX, playerY);
-                Console.Write(" ");
 
-                playerX = moveX;
-                playerY = moveY;
+                if (moveX != playerX || moveY != playerY) {
+                    Console.SetCursorPosition(playerX, playerY);
+                    Console.Write(" ");
 
-                Console.SetCursorPosition(playerX, playerY);
-                Console.Write("◈");
+                    playerX = moveX;
+                    playerY = moveY;
+
+                    Console.SetCursorPosition(playerX, playerY);
+                    Console.Write("◈");
+                }
             }
         }
     }
