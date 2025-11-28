@@ -12,9 +12,9 @@
                 { 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1},
                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-                { 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+                { 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 3, 0, 1},
                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+                { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 1, 0, 0, 0, 1},
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
             };
 
@@ -39,23 +39,38 @@
                 int moveX = playerX;
                 int moveY = playerY;
 
+                int wall = 1;
+                int box = 3;
+                int goal = 4;
+
+                int playerUp = mapData[playerY - 1, playerX];
+                int playerDown = mapData[playerY + 1, playerX];
+                int playerLeft = mapData[playerY, playerX - 1];
+                int playerRight = mapData[playerY, playerX + 1];
+
+
+
                 switch (keyInfo.Key) {
                     case ConsoleKey.UpArrow:
-                        Console.SetCursorPosition(playerX, playerY);
-
-
+                        if (playerUp != wall)
                         if (playerY > 0)
                             moveY = playerY - 1;
                         break;
+
                     case ConsoleKey.DownArrow:
+                        if (playerDown != wall)
                         if (playerY < Console.BufferHeight - 1)
                             moveY = playerY + 1;
                         break;
+
                     case ConsoleKey.LeftArrow:
+                        if (playerLeft != wall)
                         if (playerX > 0)
                             moveX = playerX - 1;
                         break;
+
                     case ConsoleKey.RightArrow:
+                        if (playerRight != wall)
                         if (playerX < Console.BufferWidth - 1)
                             moveX = playerX + 1;
                         break;
@@ -90,12 +105,25 @@
                                 break;
 
                             case 1:
+                                Console.ForegroundColor = ConsoleColor.White;
                                 Console.Write("■");
                                 break;
 
                             case 2:
+                                Console.ForegroundColor = ConsoleColor.Magenta;
                                 Console.Write("◈");
                                 break;
+
+                            case 3:
+                                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                Console.Write("□");
+                                break;
+
+                            case 4:
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.Write("※");
+                                break;
+
                         }
                     }
                     Console.WriteLine();
