@@ -19,31 +19,31 @@
                 { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 1, 0, 0, 0, 1},
                 { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
             };
-            CheckGameClear();
+
             GameStart();
 
-
+            while (true) {
+                CheckGameClear();
+            }
 
             void CheckGameClear() {
-                while (true) {
-                    isClear = (curScore == maxScore);
-                    if (isClear) {
-                        Console.Clear();
-                        Console.WriteLine("""
+                isClear = (curScore == maxScore);
+                if (isClear) {
+                    Console.Clear();
+                    Console.WriteLine("""
 
                     === You Clear Game!!! ===
 
                     """);
-                        Console.WriteLine("Press ESC to Exit.");
-                        keyInfo = Console.ReadKey(true);
-                        if (keyInfo.Key == ConsoleKey.Escape) {
-                            Environment.Exit(0);
-                        }
-                    }
+                    Console.WriteLine("Press ESC to Exit.");
                     keyInfo = Console.ReadKey(true);
-                    PlayerReset();
-                    PlayerMove();
+                    if (keyInfo.Key == ConsoleKey.Escape) {
+                        Environment.Exit(0);
+                    }
                 }
+                keyInfo = Console.ReadKey(true);
+                PlayerReset();
+                PlayerMove();
             }
 
             void GameStart() {
