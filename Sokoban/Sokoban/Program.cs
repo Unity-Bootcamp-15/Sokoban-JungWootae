@@ -1,4 +1,11 @@
 ﻿namespace Sokoban {
+    public enum TileType {
+        Empty = 0,
+        Wall = 1,
+        Player = 2,
+        Box = 3,
+        Goal = 4
+    }
     internal class Program {
         static void Main(string[] args) {
             int playerX = 3;
@@ -64,10 +71,6 @@
                 int moveX = playerX;
                 int moveY = playerY;
 
-                int wall = 1;
-                int box = 3;
-                int goal = 4;
-
                 int playerUp = mapData[playerY - 1, playerX];
                 int playerDown = mapData[playerY + 1, playerX];
                 int playerLeft = mapData[playerY, playerX - 1];
@@ -75,84 +78,84 @@
 
                 switch (keyInfo.Key) {
                     case ConsoleKey.UpArrow:
-                        if (playerUp == box) {
-                            if ((mapData[playerY - 2, playerX] == 0 || mapData[playerY - 2, playerX] == goal) && playerY > 1) {
-                                if (mapData[playerY - 2, playerX] == goal) {
-                                    mapData[playerY - 2, playerX] = goal;
+                        if (playerUp == (int)TileType.Box) {
+                            if ((mapData[playerY - 2, playerX] == 0 || mapData[playerY - 2, playerX] == (int)TileType.Goal) && playerY > 1) {
+                                if (mapData[playerY - 2, playerX] == (int)TileType.Goal) {
+                                    mapData[playerY - 2, playerX] = (int)TileType.Goal;
                                     curScore++;
                                 }
                                 else {
-                                    mapData[playerY - 2, playerX] = box;
+                                    mapData[playerY - 2, playerX] = (int)TileType.Box;
                                 }
                                 mapData[playerY - 1, playerX] = 0;
                                 moveY = playerY - 1;
                                 RedrawMap();
                             }
                         }
-                        else if (playerUp != wall) {
+                        else if (playerUp != (int)TileType.Wall) {
                             if (playerY > 0)
                                 moveY = playerY - 1;
                         }
                         break;
 
                     case ConsoleKey.DownArrow:
-                        if (playerDown == box) {
-                            if ((mapData[playerY + 2, playerX] == 0 || mapData[playerY + 2, playerX] == goal) && playerY < mapData.GetLength(0) - 2) {
-                                if (mapData[playerY + 2, playerX] == goal) {
-                                    mapData[playerY + 2, playerX] = goal;
+                        if (playerDown == (int)TileType.Box) {
+                            if ((mapData[playerY + 2, playerX] == 0 || mapData[playerY + 2, playerX] == (int)TileType.Goal) && playerY < mapData.GetLength(0) - 2) {
+                                if (mapData[playerY + 2, playerX] == (int)TileType.Goal) {
+                                    mapData[playerY + 2, playerX] = (int)TileType.Goal;
                                     curScore++;
                                 }
                                 else {
-                                    mapData[playerY + 2, playerX] = box;
+                                    mapData[playerY + 2, playerX] = (int)TileType.Box;
                                 }
                                 mapData[playerY + 1, playerX] = 0;
                                 moveY = playerY + 1;
                                 RedrawMap();
                             }
                         }
-                        else if (playerDown != wall) {
+                        else if (playerDown != (int)TileType.Wall) {
                             if (playerY < mapData.GetLength(0) - 1)
                                 moveY = playerY + 1;
                         }
                         break;
 
                     case ConsoleKey.LeftArrow:
-                        if (playerLeft == box) {
-                            if ((mapData[playerY, playerX - 2] == 0 || mapData[playerY, playerX - 2] == goal) && playerX > 1) {
-                                if (mapData[playerY, playerX - 2] == goal) {
-                                    mapData[playerY, playerX - 2] = goal;
+                        if (playerLeft == (int)TileType.Box) {
+                            if ((mapData[playerY, playerX - 2] == 0 || mapData[playerY, playerX - 2] == (int)TileType.Goal) && playerX > 1) {
+                                if (mapData[playerY, playerX - 2] == (int)TileType.Goal) {
+                                    mapData[playerY, playerX - 2] = (int)TileType.Goal;
                                     curScore++;
                                 }
                                 else {
-                                    mapData[playerY, playerX - 2] = box;
+                                    mapData[playerY, playerX - 2] = (int)TileType.Box;
                                 }
                                 mapData[playerY, playerX - 1] = 0;
                                 moveX = playerX - 1;
                                 RedrawMap();
                             }
                         }
-                        else if (playerLeft != wall) {
+                        else if (playerLeft != (int)TileType.Wall) {
                             if (playerX > 0)
                                 moveX = playerX - 1;
                         }
                         break;
 
                     case ConsoleKey.RightArrow:
-                        if (playerRight == box) {
-                            if ((mapData[playerY, playerX + 2] == 0 || mapData[playerY, playerX + 2] == goal) && playerX < mapData.GetLength(1) - 2) {
-                                if (mapData[playerY, playerX + 2] == goal) {
-                                    mapData[playerY, playerX + 2] = goal;
+                        if (playerRight == (int)TileType.Box) {
+                            if ((mapData[playerY, playerX + 2] == 0 || mapData[playerY, playerX + 2] == (int)TileType.Goal) && playerX < mapData.GetLength(1) - 2) {
+                                if (mapData[playerY, playerX + 2] == (int)TileType.Goal) {
+                                    mapData[playerY, playerX + 2] = (int)TileType.Goal;
                                     curScore++;
                                 }
                                 else {
-                                    mapData[playerY, playerX + 2] = box;
+                                    mapData[playerY, playerX + 2] = (int)TileType.Box;
                                 }
                                 mapData[playerY, playerX + 1] = 0;
                                 moveX = playerX + 1;
                                 RedrawMap();
                             }
                         }
-                        else if (playerRight != wall) {
+                        else if (playerRight != (int)TileType.Wall) {
                             if (playerX < mapData.GetLength(1) - 1)
                                 moveX = playerX + 1;
                         }
@@ -183,22 +186,22 @@
                 for (int i = 0; i < mapData.GetLength(0); i++) {
                     for (int j = 0; j < mapData.GetLength(1); j++) {
                         switch (mapData[i, j]) {
-                            case 0:
+                            case (int)TileType.Empty:
                                 Console.Write(" ");
                                 break;
-                            case 1:
+                            case (int)TileType.Wall:
                                 Console.ForegroundColor = ConsoleColor.White;
                                 Console.Write("■");
                                 break;
-                            case 2:
+                            case (int)TileType.Player:
                                 Console.ForegroundColor = ConsoleColor.Magenta;
                                 Console.Write("◈");
                                 break;
-                            case 3:
+                            case (int)TileType.Box:
                                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                                 Console.Write("□");
                                 break;
-                            case 4:
+                            case (int)TileType.Goal:
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.Write("※");
                                 break;
