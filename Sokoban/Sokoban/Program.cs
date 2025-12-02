@@ -81,8 +81,19 @@
                     Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     Console.WriteLine("        [ Magnet Mode OFF]");
                 }
+                Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine("◈    : Player");
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.WriteLine("▣    : Boxed");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("※    : Goal");
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.WriteLine("O : Portal for Player");
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("0 : Portal for Boxes");
 
-            }
+                }
             
             void SavePastState() {
                 for (int i = 0; i < mapData.GetLength(0); i++)
